@@ -1,7 +1,7 @@
 winreg-tasks
 ============
 
-This repository contains structure definitions and some tooling for the BLOBs found in the TaskCache registry key on Windows (`HKLM\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache`).
+This repository contains structure definitions and some tooling for the BLOBs found in the TaskCache registry key on Windows (`HKLM\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache`). [I wrote a blog post](https://cyber.wtf/?p=1923) which gives some background knowledge on what this is all about.
 
 To successfully run the tool, it must be launched from a command window with elevated privileges. Otherwise, the tool cannot read the registry keys which are needed to display the requested information.
 
