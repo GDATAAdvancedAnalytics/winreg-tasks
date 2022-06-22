@@ -5,7 +5,7 @@ package generated
 import "github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 
 
-type OptionalSettings_Privilege int
+type OptionalSettings_Privilege int64
 const (
 	OptionalSettings_Privilege__SeCreateTokenPrivilege OptionalSettings_Privilege = 4
 	OptionalSettings_Privilege__SeAssignPrimaryTokenPrivilege OptionalSettings_Privilege = 8
