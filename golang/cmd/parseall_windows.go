@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/utils"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"golang.org/x/sys/windows/registry"
 )
@@ -123,10 +124,10 @@ func parseDynamicInfo(data []byte) (string, error) {
 
 	var info []string
 
-	creationTime := timeFromFILETIME(int64(dynamicInfo.CreationTime))
+	creationTime := utils.TimeFromFILETIME(int64(dynamicInfo.CreationTime))
 	info = append(info, fmt.Sprintf("Creation: %s", creationTime))
 
-	lastRunTime := timeFromFILETIME(int64(dynamicInfo.LastRunTime))
+	lastRunTime := utils.TimeFromFILETIME(int64(dynamicInfo.LastRunTime))
 	info = append(info, fmt.Sprintf("Last Run: %s", lastRunTime))
 
 	taskState := dynamicInfo.TaskState
@@ -135,7 +136,7 @@ func parseDynamicInfo(data []byte) (string, error) {
 	lastErrorCode := dynamicInfo.LastErrorCode
 	info = append(info, fmt.Sprintf("Last Error: 0x%08x", lastErrorCode))
 
-	lastSuccessfulRunTime := timeFromFILETIME(int64(dynamicInfo.LastSuccessfulRunTime))
+	lastSuccessfulRunTime := utils.TimeFromFILETIME(int64(dynamicInfo.LastSuccessfulRunTime))
 	info = append(info, fmt.Sprintf("Last Successful Run: %s", lastSuccessfulRunTime))
 
 	if eof, err := s.EOF(); !eof {

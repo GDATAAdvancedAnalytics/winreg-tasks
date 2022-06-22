@@ -7,21 +7,14 @@ import (
 	"log"
 	"strings"
 	"syscall"
-	"time"
 	"unsafe"
 
 	"golang.org/x/sys/windows/registry"
 )
 
 const (
-	taskKeyBase       = `SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\`
-	secondsUntilEpoch = 11_644_473_600
+	taskKeyBase = `SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\`
 )
-
-func timeFromFILETIME(filetime int64) time.Time {
-	epoch := filetime/10_000_000 - secondsUntilEpoch
-	return time.Unix(epoch, 0)
-}
 
 func getUUIDFromTaskPath(path string) (string, error) {
 	key, err := openKey(`Tree\` + path)

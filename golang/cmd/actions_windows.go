@@ -9,6 +9,7 @@ import (
 	"reflect"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/utils"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 )
 
@@ -50,7 +51,7 @@ func actions(args ...string) {
 	for _, action := range actions.Actions {
 		switch props := action.Properties.(type) {
 		case *generated.Actions_ComHandlerProperties:
-			if clsid, err := uuidFromMemory(props.Clsid); err == nil {
+			if clsid, err := utils.UuidFromMemory(props.Clsid); err == nil {
 				log.Printf("\t"+`ComHandler -> Id "%s", CLSID {%s}, Data "%s"`, action.Id.Str, clsid.String(), props.Data.Str)
 			} else {
 				log.Printf("\tComHandler error - cannot convert clsid %v: %v\n", props.Clsid, err)
