@@ -54,7 +54,7 @@ cd ~/projects/kaitai
 sbt stage
 
 # cd into package sources
-git clone https://github.com/gdataadvancedanalytics/winreg-tasks ~/projects/winreg-tasks
+git clone https://github.com/GDATAAdvancedAnalytics/winreg-tasks ~/projects/winreg-tasks
 cd ~/projects/winreg-tasks
 
 # run generate script
@@ -72,7 +72,7 @@ If you want to build the exe file yourself or introduced changes to the source c
 ```
 Or, if you are on a Windows platform, you might just want to install the package from source:
 ```powershell
-go install github.com/gdataadvancedanalytics/winreg-tasks/golang/cmd@latest
+go install github.com/GDATAAdvancedAnalytics/winreg-tasks/cmd@latest
 ```
 
 Using the Generated Code
@@ -88,7 +88,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"golang.org/x/sys/windows/registry"
 )

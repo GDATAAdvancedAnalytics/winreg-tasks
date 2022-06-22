@@ -8,8 +8,8 @@ import (
 	"log"
 	"reflect"
 
-	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/generated"
-	"github.com/GDATAAdvancedAnalytics/winreg-tasks/golang/utils"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/utils"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 )
 
