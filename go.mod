@@ -1,4 +1,4 @@
-module github.com/GDATAAdvancedAnalytics/winreg-tasks/golang
+module github.com/GDATAAdvancedAnalytics/winreg-tasks
 
 go 1.18
 
