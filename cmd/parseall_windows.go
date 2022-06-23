@@ -9,6 +9,7 @@ import (
 	"reflect"
 	"strings"
 
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/actions"
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/utils"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
@@ -79,40 +80,22 @@ func parseTriggers(data []byte) (string, error) {
 }
 
 func parseActions(data []byte) (string, error) {
-	actions := generated.NewActions()
-	s := kaitai.NewStream(bytes.NewReader(data))
-	if err := actions.Read(s, actions, actions); err != nil {
+	actions, err := actions.FromBytes(data)
+	if err != nil {
 		return "", err
 	}
 
-	if len(actions.Actions) == 0 {
+	if len(actions.Properties) == 0 {
 		return "<no actions>", nil
 	}
 
-	var actionCollection []string
+	var propCollection []string
 
-	for _, action := range actions.Actions {
-		switch action.Properties.(type) {
-		case *generated.Actions_ComHandlerProperties:
-			actionCollection = append(actionCollection, "ComHandler")
-		case *generated.Actions_EmailTaskProperties:
-			actionCollection = append(actionCollection, "EmailTask")
-		case *generated.Actions_ExeTaskProperties:
-			actionCollection = append(actionCollection, "ExeTask")
-		case *generated.Actions_MessageboxTaskProperties:
-			actionCollection = append(actionCollection, "MessageBoxTask")
-		default:
-			return "", fmt.Errorf("unhandled action type %v", reflect.TypeOf(action.Properties))
-		}
+	for _, props := range actions.Properties {
+		propCollection = append(propCollection, props.Name())
 	}
 
-	if eof, err := s.EOF(); !eof {
-		return "", fmt.Errorf("did not parse all data")
-	} else if err != nil {
-		return "", fmt.Errorf("error trying to eof-check: %v", err)
-	}
-
-	return strings.Join(actionCollection, ", "), nil
+	return strings.Join(propCollection, ", "), nil
 }
 
 func parseDynamicInfo(data []byte) (string, error) {
