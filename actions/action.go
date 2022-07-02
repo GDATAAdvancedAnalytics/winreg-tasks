@@ -2,10 +2,15 @@ package actions
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
+)
+
+var (
+	ErrUnknownPropertiesMagic = errors.New("unknown action properties magic")
 )
 
 type Actions struct {
@@ -46,6 +51,9 @@ func FromBytes(raw []byte) (*Actions, error) {
 
 		case uint16(MessageboxPropertiesMagic):
 			props, err = NewMessageboxProperties(action.Id.Str, action.Properties.(*generated.Actions_MessageboxTaskProperties))
+
+		default:
+			return nil, ErrUnknownPropertiesMagic
 		}
 
 		if err != nil {
