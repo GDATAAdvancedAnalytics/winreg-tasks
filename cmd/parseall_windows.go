@@ -6,11 +6,12 @@ import (
 	"bytes"
 	"fmt"
 	"log"
-	"reflect"
 	"strings"
+	"time"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/actions"
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/triggers"
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/utils"
 	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"golang.org/x/sys/windows/registry"
@@ -35,45 +36,19 @@ func readAndParse(taskId string, key registry.Key, value string, parserCallback 
 }
 
 func parseTriggers(data []byte) (string, error) {
-	tt := generated.NewTriggers()
-	s := kaitai.NewStream(bytes.NewReader(data))
-	if err := tt.Read(s, tt, tt); err != nil {
-		return "", fmt.Errorf("cannot parse trigger data: %v", err)
+	triggs, err := triggers.FromBytes(data, time.Local)
+	if err != nil {
+		return "", err
 	}
 
-	if len(tt.Triggers) == 0 {
+	if len(triggs.Triggers) == 0 {
 		return "<no triggers>", nil
 	}
 
 	var triggers []string
 
-	for _, trigger := range tt.Triggers {
-		switch trigger.Properties.(type) {
-		case *generated.Triggers_BootTrigger:
-			triggers = append(triggers, "BootTrigger")
-		case *generated.Triggers_EventTrigger:
-			triggers = append(triggers, "EventTrigger")
-		case *generated.Triggers_IdleTrigger:
-			triggers = append(triggers, "IdleTrigger")
-		case *generated.Triggers_LogonTrigger:
-			triggers = append(triggers, "LogonTrigger")
-		case *generated.Triggers_RegistrationTrigger:
-			triggers = append(triggers, "RegistrationTrigger")
-		case *generated.Triggers_SessionChangeTrigger:
-			triggers = append(triggers, "SessionChangeTrigger")
-		case *generated.Triggers_TimeTrigger:
-			triggers = append(triggers, "TimeTrigger")
-		case *generated.Triggers_WnfStateChangeTrigger:
-			triggers = append(triggers, "WnfStateChangeTrigger")
-		default:
-			return "", fmt.Errorf("unhandled trigger type %v", reflect.TypeOf(trigger.Properties))
-		}
-	}
-
-	if eof, err := s.EOF(); !eof {
-		return "", fmt.Errorf("did not parse all data")
-	} else if err != nil {
-		return "", fmt.Errorf("error trying to eof-check: %v", err)
+	for _, trigger := range triggs.Triggers {
+		triggers = append(triggers, trigger.Name())
 	}
 
 	return strings.Join(triggers, ", "), nil
