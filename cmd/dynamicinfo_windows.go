@@ -30,7 +30,7 @@ func dynamicInfo(args ...string) {
 	}
 
 	if dump {
-		hex := hexdump(dynamicInfoRaw)
+		hex := utils.Hexdump(dynamicInfoRaw, 16)
 		fmt.Println(hex)
 	}
 

@@ -7,6 +7,7 @@ import (
 	"log"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/actions"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/utils"
 )
 
 func actionsHandler(args ...string) {
@@ -27,7 +28,7 @@ func actionsHandler(args ...string) {
 	}
 
 	if dump {
-		hex := hexdump(actionsRaw)
+		hex := utils.Hexdump(actionsRaw, 16)
 		fmt.Println(hex)
 	}
 

@@ -16,17 +16,3 @@ func toGolangHexBytes(data []byte) string {
 
 	return strings.TrimSuffix(str, ` `)
 }
-
-func hexdump(data []byte) string {
-	str := ""
-
-	for i, c := range data {
-		if i > 0 && i%16 == 0 {
-			str = str[:len(str)-1] + "\n"
-		}
-
-		str += fmt.Sprintf("%02x ", c)
-	}
-
-	return strings.TrimSuffix(strings.TrimSuffix(str, "\n"), " ")
-}
