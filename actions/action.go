@@ -63,8 +63,13 @@ func FromBytes(raw []byte) (*Actions, error) {
 		properties[i] = props
 	}
 
+	context := ""
+	if generatedActions.Context != nil {
+		context = generatedActions.Context.Str
+	}
+
 	actions := &Actions{
-		Context:    generatedActions.Context.Str,
+		Context:    context,
 		Properties: properties,
 		Version:    generatedActions.Version,
 	}
