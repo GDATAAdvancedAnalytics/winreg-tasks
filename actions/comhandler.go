@@ -30,6 +30,10 @@ func NewComHandlerProperties(id string, gen *generated.Actions_ComHandlerPropert
 	}, nil
 }
 
+func IsComHandlerProperties(properties Properties) bool {
+	return properties.Magic() == ComHandlerPropertiesMagic
+}
+
 func (c ComHandlerProperties) Magic() PropertiesMagic {
 	return ComHandlerPropertiesMagic
 }

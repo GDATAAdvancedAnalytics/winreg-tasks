@@ -28,6 +28,10 @@ func NewExecutionProperties(id string, gen *generated.Actions_ExeTaskProperties)
 	}, nil
 }
 
+func IsExecutionProperties(properties Properties) bool {
+	return properties.Magic() == ExecutionPropertiesMagic
+}
+
 func (e ExecutionProperties) Magic() PropertiesMagic {
 	return ExecutionPropertiesMagic
 }

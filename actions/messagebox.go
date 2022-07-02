@@ -23,6 +23,10 @@ func NewMessageboxProperties(id string, gen *generated.Actions_MessageboxTaskPro
 	}, nil
 }
 
+func IsMessageboxProperties(properties Properties) bool {
+	return properties.Magic() == MessageboxPropertiesMagic
+}
+
 func (m MessageboxProperties) Magic() PropertiesMagic {
 	return MessageboxPropertiesMagic
 }

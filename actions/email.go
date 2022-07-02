@@ -54,6 +54,10 @@ func NewEmailProperties(id string, gen *generated.Actions_EmailTaskProperties) (
 	}, nil
 }
 
+func IsEmailProperties(properties Properties) bool {
+	return properties.Magic() == EmailPropertiesMagic
+}
+
 func (e EmailProperties) Magic() PropertiesMagic {
 	return EmailPropertiesMagic
 }
