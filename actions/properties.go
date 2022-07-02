@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 package actions
 
 type PropertiesMagic uint16
