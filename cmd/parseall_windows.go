@@ -3,17 +3,14 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 	"strings"
 	"time"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/actions"
-	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/dynamicinfo"
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/triggers"
-	"github.com/GDATAAdvancedAnalytics/winreg-tasks/utils"
-	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 	"golang.org/x/sys/windows/registry"
 )
 
@@ -74,36 +71,18 @@ func parseActions(data []byte) (string, error) {
 }
 
 func parseDynamicInfo(data []byte) (string, error) {
-	dynamicInfo := generated.NewDynamicInfo()
-	s := kaitai.NewStream(bytes.NewReader(data))
-	if err := dynamicInfo.Read(s, dynamicInfo, dynamicInfo); err != nil {
+	dynamicInfo, err := dynamicinfo.FromBytes(data)
+	if err != nil {
 		return "", err
 	}
 
-	var info []string
+	ret := fmt.Sprintf(
+		"Creation Time: %s, Last Run Time: %s, Last Error Code: 0x%08x",
+		dynamicInfo.CreationTime.String(), dynamicInfo.LastRunTime.String(),
+		dynamicInfo.LastErrorCode,
+	)
 
-	creationTime := utils.TimeFromFILETIME(int64(dynamicInfo.CreationTime))
-	info = append(info, fmt.Sprintf("Creation: %s", creationTime))
-
-	lastRunTime := utils.TimeFromFILETIME(int64(dynamicInfo.LastRunTime))
-	info = append(info, fmt.Sprintf("Last Run: %s", lastRunTime))
-
-	taskState := dynamicInfo.TaskState
-	info = append(info, fmt.Sprintf("Task State: 0x%08x", taskState))
-
-	lastErrorCode := dynamicInfo.LastErrorCode
-	info = append(info, fmt.Sprintf("Last Error: 0x%08x", lastErrorCode))
-
-	lastSuccessfulRunTime := utils.TimeFromFILETIME(int64(dynamicInfo.LastSuccessfulRunTime))
-	info = append(info, fmt.Sprintf("Last Successful Run: %s", lastSuccessfulRunTime))
-
-	if eof, err := s.EOF(); !eof {
-		return "", fmt.Errorf("did not parse all data")
-	} else if err != nil {
-		return "", fmt.Errorf("error trying to eof-check: %v", err)
-	}
-
-	return strings.Join(info, ", "), nil
+	return ret, nil
 }
 
 func parseAll(args ...string) {

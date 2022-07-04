@@ -3,13 +3,11 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"log"
 
-	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
+	"github.com/GDATAAdvancedAnalytics/winreg-tasks/dynamicinfo"
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/utils"
-	"github.com/kaitai-io/kaitai_struct_go_runtime/kaitai"
 )
 
 func dynamicInfo(args ...string) {
@@ -34,25 +32,16 @@ func dynamicInfo(args ...string) {
 		fmt.Println(hex)
 	}
 
-	dynamicInfo := generated.NewDynamicInfo()
-	if err = dynamicInfo.Read(kaitai.NewStream(bytes.NewReader(dynamicInfoRaw)), dynamicInfo, dynamicInfo); err != nil {
-		log.Fatalf("cannot parse dynamic info: %v", err)
+	dynamicInfo, err := dynamicinfo.FromBytes(dynamicInfoRaw)
+	if err != nil {
+		log.Fatalf("cannot parse DynamicInfo: %v", err)
 	}
 
-	creationTime := utils.TimeFromFILETIME(int64(dynamicInfo.CreationTime))
-	log.Printf("Creation Time: %s", creationTime)
-
-	lastRunTime := utils.TimeFromFILETIME(int64(dynamicInfo.LastRunTime))
-	log.Printf("Last Run Time: %s", lastRunTime)
-
-	taskState := dynamicInfo.TaskState
-	log.Printf("Task State: 0x%08x", taskState)
-
-	lastErrorCode := dynamicInfo.LastErrorCode
-	log.Printf("Last Error Code: 0x%08x", lastErrorCode)
-
-	lastSuccessfulRunTime := utils.TimeFromFILETIME(int64(dynamicInfo.LastSuccessfulRunTime))
-	log.Printf("Last Successful Run Time: %s", lastSuccessfulRunTime)
+	log.Printf("Creation Time: %s", dynamicInfo.CreationTime.String())
+	log.Printf("Last Run Time: %s", dynamicInfo.LastRunTime.String())
+	log.Printf("Task State: 0x%08x", dynamicInfo.TaskState)
+	log.Printf("Last Error Code: 0x%08x", dynamicInfo.LastErrorCode)
+	log.Printf("Last Successful Run Time: %s", dynamicInfo.LastSuccessfulRunTime.String())
 }
 
 func init() {

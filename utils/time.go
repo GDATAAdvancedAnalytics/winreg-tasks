@@ -8,16 +8,16 @@ import (
 
 const secondsUntilEpoch = 11_644_473_600
 
-func TimeFromFILETIME(filetime int64) time.Time {
+func TimeFromFILETIME(filetime uint64) time.Time {
 	epoch := filetime/10_000_000 - secondsUntilEpoch
-	return time.Unix(epoch, 0)
+	return time.Unix(int64(epoch), 0)
 }
 
 // TimeFromTSTime turns a generated TSTime object into a Golang time.Time.
 // tz must be set to the Timezone of the TSTime object, otherwise the
 // de-localization returns objects in the wrong timezone.
 func TimeFromTSTime(gen *generated.Tstime, tz *time.Location) time.Time {
-	tt := TimeFromFILETIME(int64(gen.Filetime.HighDateTime)<<32 | int64(gen.Filetime.LowDateTime))
+	tt := TimeFromFILETIME(uint64(gen.Filetime.HighDateTime)<<32 | uint64(gen.Filetime.LowDateTime))
 
 	if gen.IsLocalized != 0 {
 		// find out the offset to UTC by assuming tt was already in UTC and
