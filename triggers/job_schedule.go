@@ -3,6 +3,7 @@
 package triggers
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/GDATAAdvancedAnalytics/winreg-tasks/generated"
@@ -110,4 +111,21 @@ func NewJobSchedule(gen *generated.JobSchedule, tz *time.Location) (*JobSchedule
 	}
 
 	return schedule, nil
+}
+
+func TimeModeToString(mode TimeMode) string {
+	switch mode {
+	case OneTime:
+		return "OneTime"
+	case Daily:
+		return "Daily"
+	case Weekly:
+		return "Weekly"
+	case DaysInMonths:
+		return "DaysInMonths"
+	case DaysInWeeksInMonths:
+		return "DaysInWeeksInMonths"
+	default:
+		return fmt.Sprintf("%d", mode)
+	}
 }

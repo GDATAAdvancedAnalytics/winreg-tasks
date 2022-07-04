@@ -60,31 +60,35 @@ func (t TimeTrigger) String() string {
 		)
 	case Daily:
 		return fmt.Sprintf(
-			`<Time start="%s" mode=%v repeat_every_n_days="%d">`,
-			t.JobSchedule.StartBoundary.String(), t.JobSchedule.Mode, t.JobSchedule.RepeatEvery,
+			`<Time start="%s" mode=%s repeat_every_n_days=%d>`,
+			t.JobSchedule.StartBoundary.String(), TimeModeToString(t.JobSchedule.Mode),
+			t.JobSchedule.RepeatEvery,
 		)
 	case Weekly:
 		return fmt.Sprintf(
-			`<Time start="%s" mode=%v days_of_week="%s" repeat_every_n_weeks="%d">`,
-			t.JobSchedule.StartBoundary.String(), t.JobSchedule.Mode, utils.BitmapToString(uint64(t.JobSchedule.DaysOfWeek)),
-			t.JobSchedule.RepeatEvery,
+			`<Time start="%s" mode=%s days_of_week="%s" repeat_every_n_weeks=%d>`,
+			t.JobSchedule.StartBoundary.String(), TimeModeToString(t.JobSchedule.Mode),
+			utils.BitmapToString(uint64(t.JobSchedule.DaysOfWeek)), t.JobSchedule.RepeatEvery,
 		)
 	case DaysInMonths:
 		return fmt.Sprintf(
-			`<Time start="%s" mode=%v months="%s" days_on_month="%s">`,
-			t.JobSchedule.StartBoundary.String(), t.JobSchedule.Mode, utils.BitmapToString(uint64(t.JobSchedule.Months)),
+			`<Time start="%s" mode=%s months="%s" days_on_month="%s">`,
+			t.JobSchedule.StartBoundary.String(), TimeModeToString(t.JobSchedule.Mode),
+			utils.BitmapToString(uint64(t.JobSchedule.Months)),
 			utils.BitmapToString(uint64(t.JobSchedule.DaysInMonth)),
 		)
 	case DaysInWeeksInMonths:
 		return fmt.Sprintf(
-			`<Time start="%s" mode=%v months="%s" weeks_in_month="%s" days_of_week="%02x">`,
-			t.JobSchedule.StartBoundary.String(), t.JobSchedule.Mode, utils.BitmapToString(uint64(t.JobSchedule.Months)),
-			utils.BitmapToString(uint64(t.JobSchedule.WeeksInMonth)), t.JobSchedule.DaysOfWeek,
+			`<Time start="%s" mode=%s months="%s" weeks_in_month="%s" days_of_week="%s">`,
+			t.JobSchedule.StartBoundary.String(), TimeModeToString(t.JobSchedule.Mode),
+			utils.BitmapToString(uint64(t.JobSchedule.Months)),
+			utils.BitmapToString(uint64(t.JobSchedule.WeeksInMonth)),
+			utils.BitmapToString(uint64(t.JobSchedule.DaysOfWeek)),
 		)
 	default:
 		return fmt.Sprintf(
-			`<Time start="%s" mode=%v>`,
-			t.JobSchedule.StartBoundary.String(), t.JobSchedule.Mode,
+			`<Time start="%s" mode=%s>`,
+			t.JobSchedule.StartBoundary.String(), TimeModeToString(t.JobSchedule.Mode),
 		)
 	}
 }
